@@ -49,8 +49,11 @@ public:
 	int 数字每几位分隔 = 4
 		, 按键按下计数 = 0
 		, 按键松开计数 = 1
-		, 按键按下刷新= 0
-		, 按键松开刷新= 1;
+		, 按键按下刷新 = 0
+		, 按键松开刷新 = 1
+		//外观
+		, 字符前空格数量 = 0
+		, 字符后空格数量= 2;
 	string 按键和计数之间显示 = 按键和计数之间显示初始值, 按键和计数之间显示初始值 = "0" //计数= 记录按键按下次数
 		, 布局末尾显示 = "";
 	int 键盘布局 = 1;
@@ -171,6 +174,50 @@ public:
 	*/
 
 	//▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬
+	// 零件
+	void cout空格(int 空格数量)
+	{
+		switch (空格数量)
+		{
+		default:
+			for (size_t i = 0; i < 空格数量; i++)
+			{
+				cout << " ";
+			}
+			break;
+		case 0:
+			cout << "";
+			break;
+		case 1:
+			cout << " ";
+			break;
+		case 2:
+			cout <<"  ";
+			break;
+		}
+	}
+	void printf空格(int 空格数量)
+	{
+		switch (空格数量)
+		{
+		default:
+			for (size_t i = 0; i < 空格数量; i++)
+			{
+				printf(" ");
+			}
+			break;
+		case 0:
+			printf("");
+			break;
+		case 1:
+			printf(" ");
+			break;
+		case 2:
+			printf("  ");
+			break;
+		}
+	}
+	//▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬
 	//!检测 单按键
 	void 显示文字_示例(int c1) { //char string wchar_t
 		color(7); //112 白
@@ -183,14 +230,18 @@ public:
 		else {
 			color(7);
 		}
-		printf("  %c  ", 键码);
+		printf空格(字符前空格数量);
+		printf("%c", 键码);
+		printf空格(字符后空格数量);
 	}
 	void 长字符(int gks1, string str) { //GetKeyState 's'
 		if (GetKeyState(gks1) < 0) { color(177); }
 		else {
 			color(7);
 		}
-		printf("%s ", str.c_str()); //printf("  %c", gks2);//"  %s", \ cout << gks1;
+		printf空格(字符前空格数量);
+		printf("%s", str.c_str()); //printf("  %c", gks2);//"  %s", \ cout << gks1;
+		printf空格(字符后空格数量);
 	}
 	void 特殊键(int tuj1, string tuj2) { //符号之类 \ _getch检测
 		if (GetKeyState(tuj1) < 0) { color(177); }
@@ -205,7 +256,9 @@ public:
 		//		color(7); //7
 		//	}
 		//}
+		printf空格(字符前空格数量);
 		cout << tuj2; //printf("%s ", tuj2.c_str()); //cout << tuj2; //printf("  %s", tuj2);//"  %s",
+		printf空格(字符后空格数量);
 	}
 	void GetAsyncKey键(int 键码, string 按键str) {
 		if (GetKeyState(键码) & 0x8000) {
@@ -214,7 +267,9 @@ public:
 		else {
 			color(7);
 		}
+		printf空格(字符前空格数量);
 		cout << 按键str;
+		printf空格(字符后空格数量);
 	}
 
 	//▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬
@@ -222,7 +277,9 @@ public:
 	//>只显示, 不计算 \ 只显示数字
 	void 显示计数(int 键码)
 	{
+		printf空格(字符前空格数量);
 		数四分.cout数字(按键按下次数[键码]);
+		printf空格(字符后空格数量);
 	}
 	void 显示计数_会亮(int 键码)
 	{
@@ -232,8 +289,9 @@ public:
 		else {
 			color(7);
 		}
+		printf空格(字符前空格数量);
 		数四分.cout数字(按键按下次数[键码]);
-		cout << " ";
+		printf空格(字符后空格数量);
 	}
 
 	//>只显示, 不计算 \ 显示按键名和 数字
@@ -242,26 +300,32 @@ public:
 		else {
 			color(7);
 		}
-		printf("  %c", 键码);
+		//开始显示
+		printf空格(字符前空格数量);
+		printf("%c", 键码);
 		if (按键和计数之间显示 != 按键和计数之间显示初始值)
 		{
 			cout << 按键和计数之间显示;
 		}
 		数四分.cout数字(按键按下次数[键码]);
-		cout << " ";
+		//末尾
+		printf空格(字符后空格数量);
 	}
 	void 长字符加计数(int 键码, string str) { //GetKeyState 's'
 		if (GetKeyState(键码) < 0) { color(177); }
 		else {
 			color(7);
 		}
+		//开头
+		printf空格(字符前空格数量);
 		printf("%s", str.c_str());
 		if (按键和计数之间显示 != 按键和计数之间显示初始值)
 		{
 			cout << 按键和计数之间显示;
 		}
 		数四分.cout数字(按键按下次数[键码]);
-		cout << " ";
+		//末尾
+		printf空格(字符后空格数量);
 	}
 	void GetAsyncKey键加计数(int 键码, string 按键str) {
 		if (GetKeyState(键码) & 0x8000) {
@@ -270,13 +334,16 @@ public:
 		else {
 			color(7);
 		}
+		//开头
+		printf空格(字符前空格数量);
 		cout << 按键str;
 		if (按键和计数之间显示 != 按键和计数之间显示初始值)
 		{
 			cout << 按键和计数之间显示;
 		}
 		数四分.cout数字(按键按下次数[键码]);
-		cout << " ";
+		//末尾
+		printf空格(字符后空格数量);
 	}
 	//▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬
 	//>显示按键加 按下计数 \ 显示按键状态和 按键按下次数
@@ -466,21 +533,9 @@ public:
 	void 按键显示_cmd() {
 		system("cls");//清屏
 		//a[数字]才能运行
-		// TOdo 外部 数四分		
+		//>显示数字, 不修改
 		数四分.coutvec(总按下次数vec);
 		cout << '\n';
-		if (按键按下计数 == 1)
-		{
-			if (按下 == 1) {
-				总按下次数vec[1] += 1; //自增
-			}
-		}
-		if (按键松开计数 == 1)
-		{
-			if (按下 == 1) {
-				总按下次数vec[1] += 1; //自增
-			}
-		}
 
 		//>switch:卡住, 不能运行
 		///>键盘布局移出后 \ 计数增加, 不显示其他的
@@ -504,7 +559,7 @@ public:
 		//}
 
 		// TOdo 更换布局
-		
+
 		//键盘布局1();
 		键盘布局_按键加计数1();
 		//键盘布局1加计数();
